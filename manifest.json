@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "clairaut.atlas",
+  "name": "Atlas",
+  "version": "1.0.0",
+  "author": "clairaut",
+  "description": "Live ephemeris data from atlas: moon phase and planetary positions",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "BarWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Atlas",
+    "description": "Live ephemeris data from atlas. Set mode to moon or planets.",
+    "category": "Info",
+    "defaultSection": "center",
+    "allowMultiple": true
+  }
+}
