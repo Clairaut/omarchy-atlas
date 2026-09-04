@@ -12,9 +12,6 @@ BarWidget {
   // Set by the dispatcher, so the button can drive the panel it owns.
   property var host: null
 
-  // U+1FA90 RINGED PLANET plus U+FE0E to force the Symbola outline instead of a colour emoji
-  readonly property string icon: "🪐︎"
-
   readonly property bool opened: host ? host.opened === true : false
 
   implicitWidth: button.implicitWidth
@@ -36,8 +33,16 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: root.icon
     slotSize: Style.bar.statusSlot
+    iconComponent: Component {
+      Item {
+        SaturnIcon {
+          anchors.centerIn: parent
+          iconSize: Style.space(14)
+          color: button.foreground
+        }
+      }
+    }
     tooltipText: root.opened ? "" : "Atlas: Ephemeris"
     onPressed: function (b) {
       if (!root.host) return
