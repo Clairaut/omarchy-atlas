@@ -1,9 +1,6 @@
 import QtQuick
-import Quickshell
-import Quickshell.Io
 import qs.Commons
 import qs.Ui
-import "Model.js" as Model
 
 Panel {
   id: root
@@ -15,15 +12,17 @@ Panel {
   property var hostWidget: null
   readonly property var barIdentity: hostWidget || root
 
-  property var groups: []
-  property var aspects: []
-  property string stamp: ""
-  property string coords: ""
+  // Bound by the dispatcher. The observe runs in the plugin's service, so two
+  // panels on two screens read one ephemeris instead of each running its own.
+  property var service: null
 
-  readonly property string atlasBin: Quickshell.env("HOME") + "/.local/bin/atlas"
+  readonly property var groups: service ? service.groups : []
+  readonly property var aspects: service ? service.aspects : []
+  readonly property string stamp: service ? service.stamp : ""
+  readonly property string coords: service ? service.coords : ""
 
   function refresh() {
-    if (!observeProc.running) observeProc.running = true
+    if (root.service) root.service.refreshPlanets()
   }
 
   function open() {
@@ -34,41 +33,6 @@ Panel {
   function openFromHotkey() { open() }
   function close() { root.controller.hide() }
   function toggle() { root.opened ? close() : open() }
-
-  // COLUMNS goes through sh because Rich truncates its table to 80 columns when stdout is not a tty.
-  Process {
-    id: observeProc
-    command: ["sh", "-c", "COLUMNS=200 exec " + root.atlasBin + " observe " + Model.requestOrder().join(" ") + " -a zodiac -a aspects"]
-    stdout: StdioCollector {
-      waitForEnd: true
-      onStreamFinished: {
-        var parsed = Model.parseObserve(text)
-        if (parsed.bodies.length === 0) return
-        root.groups = Model.groupedBodies(parsed.bodies)
-        root.aspects = parsed.aspects
-        root.stamp = Qt.formatDateTime(new Date(), "yyyy-MM-dd HH:mm:ss")
-      }
-    }
-  }
-
-  // Observer coordinates live in the atlas config, not in the observe output.
-  FileView {
-    id: configFile
-    path: Quickshell.env("HOME") + "/.config/atlas/atlas.toml"
-    watchChanges: true
-    printErrors: false
-    onFileChanged: reload()
-    onLoaded: {
-      var body = text()
-      var lat = body.match(/lat\s*=\s*(-?[\d.]+)/)
-      var lon = body.match(/lon\s*=\s*(-?[\d.]+)/)
-      if (!lat || !lon) return
-      var la = parseFloat(lat[1])
-      var lo = parseFloat(lon[1])
-      root.coords = Math.abs(la).toFixed(4) + (la >= 0 ? "°N " : "°S ")
-                  + Math.abs(lo).toFixed(4) + (lo >= 0 ? "°E" : "°W")
-    }
-  }
 
   KeyboardPanel {
     id: panel

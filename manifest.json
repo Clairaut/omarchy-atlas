@@ -6,10 +6,12 @@
   "author": "clairaut",
   "description": "Live ephemeris data from atlas: moon phase and planetary positions",
   "kinds": [
-    "bar-widget"
+    "bar-widget",
+    "service"
   ],
   "entryPoints": {
-    "barWidget": "BarWidget.qml"
+    "barWidget": "BarWidget.qml",
+    "service": "Service.qml"
   },
   "barWidget": {
     "displayName": "Atlas",

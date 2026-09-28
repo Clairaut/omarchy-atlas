@@ -1,6 +1,4 @@
 import QtQuick
-import Quickshell
-import Quickshell.Io
 import qs.Commons
 import qs.Ui
 import "Model.js" as Model
@@ -10,43 +8,23 @@ BarWidget {
   // Set by the dispatcher; the host injects bar/settings/moduleName into it, not into this file.
   property var host: null
 
-  property string signGlyph: ""
-  property string orb: ""
-  property real phaseAngle: -1
-  property bool phaseWaxing: false
+  // Bound by the dispatcher: the poll lives in the plugin's service, so one
+  // instance serves every screen and every moon entry.
+  property var service: null
+
+  readonly property string signGlyph: service ? service.signGlyph : ""
+  readonly property string orb: service ? service.orb : ""
+  readonly property real phaseAngle: service ? service.phaseAngle : -1
+  readonly property bool phaseWaxing: service ? service.phaseWaxing : false
 
   readonly property real illum: phaseAngle < 0 ? -1 : Model.illuminated(phaseAngle)
 
   function refresh() {
-    if (!observeProc.running) observeProc.running = true
+    if (root.service) root.service.refreshMoon()
   }
 
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
-
-  Process {
-    id: observeProc
-    command: [Quickshell.env("HOME") + "/.local/bin/atlas", "observe", "moon", "-c", "-a", "zodiac", "-a", "phase"]
-    stdout: StdioCollector {
-      waitForEnd: true
-      onStreamFinished: {
-        var m = Model.parseMoon(text)
-        if (!m) return
-        root.signGlyph = m.signGlyph
-        root.orb = m.orb
-        root.phaseAngle = m.angle
-        root.phaseWaxing = m.waxing
-      }
-    }
-  }
-
-  Timer {
-    interval: 300000
-    running: true
-    repeat: true
-    triggeredOnStart: true
-    onTriggered: root.refresh()
-  }
 
   // Mixed content means driving width from the row, so the built in label is off and fixedWidth is set explicitly
   WidgetButton {

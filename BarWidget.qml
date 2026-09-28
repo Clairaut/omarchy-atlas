@@ -15,6 +15,32 @@ BarWidget {
   readonly property string mode: setting("mode", "moon")
   readonly property var modes: ({ "moon": "Moon.qml", "planets": "Planets.qml" })
 
+  // Both faces read one service: the polls live there, so every screen and every
+  // entry shares a single atlas process. The host injects `bar` on a later tick
+  // and creates services on its own schedule, so resolve on both and retry.
+  property var service: null
+
+  function resolveService() {
+    var shellApi = root.bar ? root.bar.shell : null
+    var next = (shellApi && typeof shellApi.serviceFor === "function")
+      ? shellApi.serviceFor(root.moduleName) : null
+    if (next === root.service) return
+    if (root.service) root.service.detach()
+    root.service = next
+    if (root.service) root.service.attach()
+  }
+
+  onBarChanged: resolveService()
+  Component.onCompleted: resolveService()
+  Component.onDestruction: if (root.service) root.service.detach()
+
+  Timer {
+    interval: 500
+    repeat: true
+    running: root.service === null
+    onTriggered: root.resolveService()
+  }
+
   readonly property bool hasPanel: root.mode === "planets"
   readonly property var panelItem: panelLoader.item
 
@@ -73,6 +99,7 @@ BarWidget {
   Binding { target: view.item; property: "settings";   value: root.settings;   when: view.item }
   Binding { target: view.item; property: "moduleName"; value: root.moduleName; when: view.item }
   Binding { target: view.item; property: "host";       value: root;            when: view.item }
+  Binding { target: view.item; property: "service";    value: root.service;    when: view.item }
 
   Loader {
     id: panelLoader
@@ -87,4 +114,5 @@ BarWidget {
   Binding { target: panelLoader.item; property: "settings";   value: root.settings; when: panelLoader.item }
   Binding { target: panelLoader.item; property: "anchorItem"; value: root;          when: panelLoader.item }
   Binding { target: panelLoader.item; property: "hostWidget"; value: root;          when: panelLoader.item }
+  Binding { target: panelLoader.item; property: "service";    value: root.service;  when: panelLoader.item }
 }
