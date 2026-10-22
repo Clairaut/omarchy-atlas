@@ -1,5 +1,5 @@
 import QtQuick
-import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 import "Model.js" as Model
 
@@ -33,7 +33,7 @@ BarWidget {
     bar: root.bar
     labelVisible: false
     hasVisualContent: true
-    fixedWidth: contentRow.implicitWidth + Style.space(17) * 2
+    fixedWidth: contentRow.implicitWidth + Commons.Style.space(17) * 2
     tooltipText: root.illum < 0
       ? "Atlas: The Moon"
       : Model.phaseName(root.illum, root.phaseWaxing) + ", " + (root.illum * 100).toFixed(0) + "% lit"
@@ -42,20 +42,20 @@ BarWidget {
     Row {
       id: contentRow
       anchors.centerIn: parent
-      spacing: Style.space(6)
+      spacing: Commons.Style.space(6)
 
       // The drawn dial stands in for the moon glyph, being a picture of the same thing
       Canvas {
         id: dial
         anchors.verticalCenter: parent.verticalCenter
         visible: root.illum >= 0
-        width: Style.space(12)
-        height: Style.space(12)
+        width: Commons.Style.space(12)
+        height: Commons.Style.space(12)
 
         property real k: root.illum
         property bool waxing: root.phaseWaxing
         property color lit: button.foreground
-        property color dark: Color.bar.background
+        property color dark: Commons.Color.bar.background
 
         onKChanged: requestPaint()
         onWaxingChanged: requestPaint()
@@ -100,7 +100,7 @@ BarWidget {
 
           ctx.beginPath()
           ctx.arc(cx, cy, r, 0, 2 * Math.PI)
-          ctx.strokeStyle = Util.alpha(dial.lit, 0.45)
+          ctx.strokeStyle = Commons.Util.alpha(dial.lit, 0.45)
           ctx.lineWidth = 1
           ctx.stroke()
         }
@@ -111,7 +111,7 @@ BarWidget {
         visible: root.signGlyph !== ""
         text: root.signGlyph
         font.family: button.fontFamily
-        font.pixelSize: Style.font.bodySmall
+        font.pixelSize: Commons.Style.font.bodySmall
         color: button.foreground
       }
 
@@ -120,7 +120,7 @@ BarWidget {
         visible: root.orb !== ""
         text: root.orb
         font.family: button.fontFamily
-        font.pixelSize: Style.font.bodySmall
+        font.pixelSize: Commons.Style.font.bodySmall
         font.features: ({ "tnum": 1 })
         color: button.foreground
       }
@@ -131,9 +131,9 @@ BarWidget {
         visible: root.illum >= 0
         text: (root.illum * 100).toFixed(0) + "%  " + root.phaseAngle.toFixed(2) + "°"
         font.family: button.fontFamily
-        font.pixelSize: Style.font.bodySmall
+        font.pixelSize: Commons.Style.font.bodySmall
         font.features: ({ "tnum": 1 })
-        color: Color.muted
+        color: Commons.Color.muted
       }
     }
   }

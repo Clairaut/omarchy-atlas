@@ -1,5 +1,5 @@
 import QtQuick
-import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 Panel {
@@ -42,7 +42,7 @@ Panel {
     open: root.opened
     centerOnBar: false
     focusTarget: keyCatcher
-    contentWidth: panel.fittedContentWidth(Style.space(520))
+    contentWidth: panel.fittedContentWidth(Commons.Style.space(520))
     contentHeight: panel.fittedContentHeight(content.implicitHeight)
 
     PanelKeyCatcher {
@@ -59,29 +59,29 @@ Panel {
         // Header
         Item {
           width: parent.width
-          height: headerCol.implicitHeight + Style.space(20)
+          height: headerCol.implicitHeight + Commons.Style.space(20)
 
           Column {
             id: headerCol
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.leftMargin: Style.space(14)
-            anchors.rightMargin: Style.space(14)
+            anchors.leftMargin: Commons.Style.space(14)
+            anchors.rightMargin: Commons.Style.space(14)
             anchors.verticalCenter: parent.verticalCenter
-            spacing: Style.space(3)
+            spacing: Commons.Style.space(3)
 
             Text {
               text: root.stamp !== "" ? root.stamp : "reading ephemeris"
-              font.family: Style.font.family
-              font.pixelSize: Style.font.bodySmall
-              color: Color.popups.text
+              font.family: Commons.Style.font.family
+              font.pixelSize: Commons.Style.font.bodySmall
+              color: Commons.Color.popups.text
             }
 
             Text {
               text: root.coords !== "" ? root.coords + "  ·  tropical" : "tropical"
-              font.family: Style.font.family
-              font.pixelSize: Style.font.caption
-              color: Color.muted
+              font.family: Commons.Style.font.family
+              font.pixelSize: Commons.Style.font.caption
+              color: Commons.Color.muted
             }
           }
         }
@@ -89,7 +89,7 @@ Panel {
         Rectangle {
           width: parent.width
           height: 1
-          color: Util.alpha(Color.popups.text, 0.14)
+          color: Commons.Util.alpha(Commons.Color.popups.text, 0.14)
         }
 
         // Ephemeris on the left, aspects on the right
@@ -101,7 +101,7 @@ Panel {
             id: bodiesCol
             width: parent.width - aspectsCol.width - 1
             spacing: 0
-            bottomPadding: Style.space(10)
+            bottomPadding: Commons.Style.space(10)
 
             Repeater {
               model: root.groups
@@ -113,13 +113,13 @@ Panel {
 
                 Text {
                   text: modelData.label
-                  font.family: Style.font.family
-                  font.pixelSize: Style.font.caption
+                  font.family: Commons.Style.font.family
+                  font.pixelSize: Commons.Style.font.caption
                   font.letterSpacing: 1.4
-                  color: Color.muted
-                  leftPadding: Style.space(14)
-                  topPadding: Style.space(11)
-                  bottomPadding: Style.space(4)
+                  color: Commons.Color.muted
+                  leftPadding: Commons.Style.space(14)
+                  topPadding: Commons.Style.space(11)
+                  bottomPadding: Commons.Style.space(4)
                 }
 
                 Repeater {
@@ -128,60 +128,60 @@ Panel {
                   Item {
                     required property var modelData
                     width: bodiesCol.width
-                    height: Style.space(19)
+                    height: Commons.Style.space(19)
 
                     Text {
                       id: bodyGlyph
                       anchors.left: parent.left
-                      anchors.leftMargin: Style.space(14)
+                      anchors.leftMargin: Commons.Style.space(14)
                       anchors.verticalCenter: parent.verticalCenter
                       text: modelData.glyph
-                      font.family: Style.font.family
-                      font.pixelSize: Style.font.subtitle
-                      color: Color.popups.text
+                      font.family: Commons.Style.font.family
+                      font.pixelSize: Commons.Style.font.subtitle
+                      color: Commons.Color.popups.text
                     }
 
                     Text {
                       anchors.left: parent.left
-                      anchors.leftMargin: Style.space(38)
+                      anchors.leftMargin: Commons.Style.space(38)
                       anchors.verticalCenter: parent.verticalCenter
                       text: modelData.name
-                      font.family: Style.font.family
-                      font.pixelSize: Style.font.bodySmall
-                      color: Color.muted
+                      font.family: Commons.Style.font.family
+                      font.pixelSize: Commons.Style.font.bodySmall
+                      color: Commons.Color.muted
                     }
 
                     Text {
                       anchors.left: parent.left
-                      anchors.leftMargin: Style.space(104)
+                      anchors.leftMargin: Commons.Style.space(104)
                       anchors.verticalCenter: parent.verticalCenter
                       text: modelData.signGlyph
-                      font.family: Style.font.family
-                      font.pixelSize: Style.font.bodySmall
-                      color: Color.popups.text
+                      font.family: Commons.Style.font.family
+                      font.pixelSize: Commons.Style.font.bodySmall
+                      color: Commons.Color.popups.text
                     }
 
                     Text {
                       anchors.right: retroMark.left
-                      anchors.rightMargin: Style.space(6)
+                      anchors.rightMargin: Commons.Style.space(6)
                       anchors.verticalCenter: parent.verticalCenter
                       text: modelData.orb
-                      font.family: Style.font.family
-                      font.pixelSize: Style.font.bodySmall
+                      font.family: Commons.Style.font.family
+                      font.pixelSize: Commons.Style.font.bodySmall
                       font.features: ({ "tnum": 1 })
-                      color: Color.popups.text
+                      color: Commons.Color.popups.text
                     }
 
                     Text {
                       id: retroMark
                       anchors.right: parent.right
-                      anchors.rightMargin: Style.space(12)
+                      anchors.rightMargin: Commons.Style.space(12)
                       anchors.verticalCenter: parent.verticalCenter
-                      width: Style.space(10)
+                      width: Commons.Style.space(10)
                       text: modelData.retro ? "℞" : ""
-                      font.family: Style.font.family
-                      font.pixelSize: Style.font.bodySmall
-                      color: Color.urgent
+                      font.family: Commons.Style.font.family
+                      font.pixelSize: Commons.Style.font.bodySmall
+                      color: Commons.Color.urgent
                     }
                   }
                 }
@@ -193,24 +193,24 @@ Panel {
           Rectangle {
             width: 1
             height: bodiesCol.implicitHeight
-            color: Util.alpha(Color.popups.text, 0.14)
+            color: Commons.Util.alpha(Commons.Color.popups.text, 0.14)
           }
 
           Column {
             id: aspectsCol
-            width: Style.space(178)
+            width: Commons.Style.space(178)
             spacing: 0
-            bottomPadding: Style.space(10)
+            bottomPadding: Commons.Style.space(10)
 
             Text {
               text: "ASPECTS"
-              font.family: Style.font.family
-              font.pixelSize: Style.font.caption
+              font.family: Commons.Style.font.family
+              font.pixelSize: Commons.Style.font.caption
               font.letterSpacing: 1.4
-              color: Color.muted
-              leftPadding: Style.space(12)
-              topPadding: Style.space(11)
-              bottomPadding: Style.space(4)
+              color: Commons.Color.muted
+              leftPadding: Commons.Style.space(12)
+              topPadding: Commons.Style.space(11)
+              bottomPadding: Commons.Style.space(4)
             }
 
             Repeater {
@@ -219,37 +219,37 @@ Panel {
               Item {
                 required property var modelData
                 width: aspectsCol.width
-                height: Style.space(19)
+                height: Commons.Style.space(19)
 
                 Text {
                   anchors.left: parent.left
-                  anchors.leftMargin: Style.space(12)
+                  anchors.leftMargin: Commons.Style.space(12)
                   anchors.verticalCenter: parent.verticalCenter
                   text: modelData.aGlyph + " " + modelData.bGlyph
-                  font.family: Style.font.family
-                  font.pixelSize: Style.font.bodySmall
-                  color: Color.popups.text
+                  font.family: Commons.Style.font.family
+                  font.pixelSize: Commons.Style.font.bodySmall
+                  color: Commons.Color.popups.text
                 }
 
                 Text {
                   anchors.left: parent.left
-                  anchors.leftMargin: Style.space(52)
+                  anchors.leftMargin: Commons.Style.space(52)
                   anchors.verticalCenter: parent.verticalCenter
                   text: modelData.glyph
-                  font.family: Style.font.family
-                  font.pixelSize: Style.font.bodySmall
-                  color: modelData.exact ? Color.popups.text : Color.muted
+                  font.family: Commons.Style.font.family
+                  font.pixelSize: Commons.Style.font.bodySmall
+                  color: modelData.exact ? Commons.Color.popups.text : Commons.Color.muted
                 }
 
                 Text {
                   anchors.right: parent.right
-                  anchors.rightMargin: Style.space(12)
+                  anchors.rightMargin: Commons.Style.space(12)
                   anchors.verticalCenter: parent.verticalCenter
                   text: modelData.orbText
-                  font.family: Style.font.family
-                  font.pixelSize: Style.font.bodySmall
+                  font.family: Commons.Style.font.family
+                  font.pixelSize: Commons.Style.font.bodySmall
                   font.features: ({ "tnum": 1 })
-                  color: modelData.exact ? Color.popups.text : Color.muted
+                  color: modelData.exact ? Commons.Color.popups.text : Commons.Color.muted
                 }
               }
             }
@@ -257,11 +257,11 @@ Panel {
             Text {
               visible: root.aspects.length === 0
               text: "none in orb"
-              font.family: Style.font.family
-              font.pixelSize: Style.font.caption
-              color: Color.muted
-              leftPadding: Style.space(12)
-              topPadding: Style.space(2)
+              font.family: Commons.Style.font.family
+              font.pixelSize: Commons.Style.font.caption
+              color: Commons.Color.muted
+              leftPadding: Commons.Style.space(12)
+              topPadding: Commons.Style.space(2)
             }
           }
         }
@@ -269,32 +269,32 @@ Panel {
         Rectangle {
           width: parent.width
           height: 1
-          color: Util.alpha(Color.popups.text, 0.14)
+          color: Commons.Util.alpha(Commons.Color.popups.text, 0.14)
         }
 
         // Footer
         Item {
           width: parent.width
-          height: Style.space(28)
+          height: Commons.Style.space(28)
 
           Text {
             anchors.left: parent.left
-            anchors.leftMargin: Style.space(14)
+            anchors.leftMargin: Commons.Style.space(14)
             anchors.verticalCenter: parent.verticalCenter
             text: root.bodyCount + " bodies  ·  " + root.aspects.length + " aspects"
-            font.family: Style.font.family
-            font.pixelSize: Style.font.caption
-            color: Color.muted
+            font.family: Commons.Style.font.family
+            font.pixelSize: Commons.Style.font.caption
+            color: Commons.Color.muted
           }
 
           Text {
             anchors.right: parent.right
-            anchors.rightMargin: Style.space(14)
+            anchors.rightMargin: Commons.Style.space(14)
             anchors.verticalCenter: parent.verticalCenter
             text: "click to refresh"
-            font.family: Style.font.family
-            font.pixelSize: Style.font.caption
-            color: Util.alpha(Color.muted, 0.7)
+            font.family: Commons.Style.font.family
+            font.pixelSize: Commons.Style.font.caption
+            color: Commons.Util.alpha(Commons.Color.muted, 0.7)
           }
         }
       }

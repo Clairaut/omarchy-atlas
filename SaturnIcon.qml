@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Shapes
-import qs.Commons
+import qs.Commons as Commons
 
 Item {
   id: root
 
-  property real iconSize: Style.font.icon
-  property color color: Color.foreground
-  property color backdrop: Color.bar.background
+  property real iconSize: Commons.Style.font.icon
+  property color color: Commons.Color.foreground
+  property color backdrop: Commons.Color.bar.background
 
   readonly property real tilt: -20
   readonly property real ringRx: iconSize * 0.47

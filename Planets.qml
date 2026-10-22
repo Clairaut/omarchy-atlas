@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell.Io
-import qs.Commons
+import qs.Commons as Commons
 import qs.Ui
 
 // The bar face for `mode: "planets"`. The panel itself, and the open/close
@@ -33,12 +33,12 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    slotSize: Style.bar.statusSlot
+    slotSize: Commons.Style.bar.statusSlot
     iconComponent: Component {
       Item {
         SaturnIcon {
           anchors.centerIn: parent
-          iconSize: Style.space(14)
+          iconSize: Commons.Style.space(14)
           color: button.foreground
         }
       }
